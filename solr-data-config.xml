@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataConfig>
+   <dataSource type="JdbcDataSource" driver="com.mysql.jdbc.Driver" url="jdbc:mysql://172.19.0.2:3306/sakila" user="root" password="sechien" />
+   <document>
+      <entity name="film" query="SELECT film_id, title, description FROM film">
+         <field column="film_id" name="film_id" />
+         <field column="title" name="title" />
+         <field column="description" name="summary" />
+
+         <entity name = "film_actor" query="select actor_id from film_actor where film_id='${film.film_id}'">
+           <entity name = "actor" query = "select concat(first_name,' ',last_name) as actor from actor where actor_id = '${film_actor.actor_id}'">
+             <field column="actor" name="actors" />
+           </entity>
+         </entity>
+
+         <entity name = "film_category" query="select category_id from film_category where film_id='${film.film_id}'">
+           <entity name = "category" query = "select name from category where category_id = '${film_category.category_id}'">
+             <field column="name" name="categories" />
+           </entity>
+         </entity>
+      </entity>
+   </document>
+</dataConfig>
